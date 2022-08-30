@@ -1,13 +1,17 @@
 This application is developed to convert from Intel HEX format or BIN file to Verilog memory file format and is intended to be call by the compiler after HEX or BIN file was generated.
 
 Below is an example of usage for Atmel Studio on Post build command line:
+
 ```
 IntelHexToVerilogMem.exe -i "$(OutputFileName).hex" -o "Output.mem" -g "2" -b "0x20000000" -s "2"
 ```
+
 Below is an example of usage for Eclipse on Post build command line:
+
 ```
-* "${PWD}/IntelHexToVerilogMem.exe" -i "${PWD}\Input.hex" -o "Output.mem" -g "4" -b "0x8000" -s "2"
+"${PWD}/IntelHexToVerilogMem.exe" -i "${PWD}\Input.hex" -o "Output.mem" -g "4" -b "0x8000" -s "2"
 ```
+
 * -g argument is optional (default is 2) and indicate the length in bytes on a row, values supported are 1, 2 or 4.
 
 * -b argument is the offset of the memory, for example if the ROM memory starts from 0x20000000 the addresses from 0 to 0x1fffffff is not included in output file, is not used in case of a bin file, we will write -b 0x20000000.

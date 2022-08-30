@@ -1,0 +1,28 @@
+<meta charset="UTF-8">
+<p>This application is developed to convert from Intel HEX format or BIN file to Verilog memory file format and is intended to be call by the compiler after HEX or BIN file was generated.</p>
+
+<p>Below is an example of usage for Atmel Studio on Post build command line:</p>
+
+<p><code>
+IntelHexToVerilogMem.exe -i "$(OutputFileName).hex" -o "Output.mem" -g "2" -b "0x20000000" -s "2"
+</code></p>
+
+<p>Below is an example of usage for Eclipse on Post build command line:</p>
+
+<p><code>
+"${PWD}/IntelHexToVerilogMem.exe" -i "${PWD}\Input.hex" -o "Output.mem" -g "4" -b "0x8000" -s "2"
+</code></p>
+
+<ul>
+<li><p>-g argument is optional (default is 2) and indicate the length in bytes on a row, values supported are 1, 2 or 4.</p></li>
+<li><p>-b argument is the offset of the memory, for example if the ROM memory starts from 0x20000000 the addresses from 0 to 0x1fffffff is not included in output file, is not used in case of a bin file, we will write -b 0x20000000.</p></li>
+<li><p>-s argument is optional and default value is 1.</p></li>
+</ul>
+
+<p>-s argument is the split value, for example if -g = 4 and -s = 2 this application will output 3 files, one with 4 bytes on the row and two files with half a row each, file "core1ROM<em>0.mem" will contain bytes 1 and 0 from the 4 byte row and file "core1ROM</em>1.mem" will contain bytes 3 and 2 from the 4 bytes row.</p>
+
+<p>If -s argument is 4 and -g is 4 will output five files, one with four bytes on each row and five files each with one byte on each row from a four byte row, this will help to load each individual file in four memory blocks each 8 bit width and concatenate them to read or write misaligned words.</p>
+
+<p>This argument is useful if you want to easily implement unaligned memory read and write in a single clock cycle.</p>
+
+<p>For example for memory's with 32 bit per words if you want to read unaligned 32 bit data you can read the low 16 bit data from file "core1ROM<em>1.mem" and the high 16 bit data from address + 1 from file "core1ROM</em>0.mem".</p>
